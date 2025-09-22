@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AromTest — Админка</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Дополнительные стили для админки */
+        .admin-section {
+            margin-bottom: 40px;
+            padding: 20px;
+            border: 1px solid #fff;
+        }
+        .admin-section h2 {
+            text-align: left;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: normal; /* Отличие от основной формы заказа */
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            font-size: 1rem;
+        }
+        .admin-perfume-item {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #333;
+        }
+        .admin-perfume-item:last-child {
+             border-bottom: none;
+        }
+        .admin-perfume-item > * {
+            margin: 0;
+        }
+        .stock-input {
+            width: 80px !important;
+            padding: 5px !important;
+        }
+        .update-stock-btn, .delete-btn {
+            padding: 5px 10px;
+            font-size: 0.8rem;
+        }
+        #perfume-list-container {
+            max-height: 500px;
+            overflow-y: auto;
+            border: 1px solid #666;
+            padding: 10px;
+            margin-top: 10px;
+        }
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            background: #000;
+            color: #fff;
+            border: 1px solid #fff;
+            z-index: 1000;
+            border-radius: 0;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+        .notification.success { background: #000; border-color: #4CAF50; }
+        .notification.error { background: #000; border-color: #f44336; }
+
+        /* Адаптивность для админки */
+        @media (max-width: 768px) {
+            .admin-perfume-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .stock-input {
+                width: 100% !important;
+            }
+        }
+    </style>
+</head>
+<body class="dark"> <!-- Используем темную тему по умолчанию -->
+    <header class="header-dark">
+        <div class="container flex-row">
+            <div class="logo-block">
+                <svg class="logo" viewBox="0 0 32 32" fill="none">
+                    <circle cx="16" cy="16" r="14" stroke="#fff" stroke-width="2"/>
+                    <path d="M16 10 C18 14, 22 14, 16 22 C10 14, 14 14, 16 10 Z" fill="#fff"/>
+                </svg>
+                <h1>AromTest Admin</h1>
+            </div>
+
+            <nav class="main-nav">
+                <a href="/">На сайт</a>
+                <a href="/api/admin-logout" id="logout-btn">Выход</a>
+            </nav>
+
+            <div class="theme-toggle">
+                <button id="theme-toggle" aria-label="Переключить тему">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Секция добавления нового товара -->
+        <section class="admin-section">
+            <h2>Добавить новый товар</h2>
+            <form id="add-perfume-form">
+                <div class="form-group">
+                    <label for="name">Название *</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="brand">Бренд *</label>
+                    <input type="text" id="brand" name="brand" required>
+                </div>
+                <div class="form-group">
+                    <label for="price">Цена (с ₽) *</label>
+                    <input type="text" id="price" name="price" placeholder="2 000 ₽" required>
+                </div>
+                <div class="form-group">
+                    <label for="numericPrice">Цена (число) *</label>
+                    <input type="number" id="numericPrice" name="numericPrice" required>
+                </div>
+                <div class="form-group">
+                    <label for="stock">Количество на складе *</label>
+                    <input type="number" id="stock" name="stock" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="notes">Ноты аромата</label>
+                    <input type="text" id="notes" name="notes">
+                </div>
+                <div class="form-group">
+                    <label for="description">Описание</label>
+                    <textarea id="description" name="description"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="image">URL изображения *</label>
+                    <input type="url" id="image" name="image" required>
+                </div>
+                <div class="form-group">
+                    <label for="volume">Объем *</label>
+                    <input type="text" id="volume" name="volume" required>
+                </div>
+                <div class="form-group">
+                    <label for="category">Категория *</label>
+                    <select id="category" name="category" required>
+                        <option value="мужской">Мужские</option>
+                        <option value="женский">Женские</option>
+                        <option value="унисекс">Унисекс</option>
+                    </select>
+                </div>
+                <button type="submit" class="checkout-btn">Добавить товар</button>
+            </form>
+        </section>
+
+        <!-- Секция управления существующими товарами -->
+        <section class="admin-section">
+            <h2>Управление товарами</h2>
+            <p>Здесь вы можете изменить количество на складе или удалить товар.</p>
+            <div id="perfume-list-container">
+                <!-- Список товаров будет рендериться здесь -->
+                <p class="empty-cart">Загрузка товаров...</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer-dark">
+        <div class="container">
+            <p>&copy; 2025 AromTest. Админка.</p>
+        </div>
+    </footer>
+
+    <!-- Модальное окно для подтверждения удаления -->
+    <div id="delete-modal" class="modal" style="background: rgba(0,0,0,0.8);">
+        <div class="modal-content" style="width: 300px; padding: 2rem;">
+            <span class="close" id="close-delete-modal">&times;</span>
+            <h3 style="margin-bottom: 1rem;">Подтвердите удаление</h3>
+            <p id="delete-modal-text">Вы уверены, что хотите удалить этот товар?</p>
+            <div style="display: flex; justify-content: space-between; margin-top: 1.5rem;">
+                <button id="confirm-delete-btn" class="checkout-btn" style="background: #f44336; border-color: #f44336;">Удалить</button>
+                <button id="cancel-delete-btn" class="checkout-btn">Отмена</button>
+            </div>
+        </div>
+    </div>
+
+        <!-- <script src="main.js"></script> main.js отключен для админки, чтобы избежать конфликтов -->
+    <script src="admin.js"></script> <!-- Наш скрипт для админки -->
+</body>
+</html>

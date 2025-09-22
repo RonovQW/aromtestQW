@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AromTest — Магазин духов</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark">
+    <header class="header-dark">
+        <div class="container flex-row">
+            <div class="logo-block">
+                <svg class="logo" viewBox="0 0 32 32" fill="none">
+                    <circle cx="16" cy="16" r="14" stroke="#fff" stroke-width="2"/>
+                    <path d="M16 10 C18 14, 22 14, 16 22 C10 14, 14 14, 16 10 Z" fill="#fff"/>
+                </svg>
+                <h1>AromTest</h1>
+            </div>
+
+            <!-- Гамбургер меню для мобильных -->
+            <div class="mobile-menu-toggle">
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+
+            <!-- Иконка корзины для мобильных -->
+            <div class="mobile-cart-icon">
+                <a href="#" data-section="cart">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="9" cy="21" r="1"></circle>
+                        <circle cx="20" cy="21" r="1"></circle>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                    <span class="mobile-cart-count">0</span>
+                </a>
+            </div>
+
+            <div class="header-search">
+                <input type="text" id="header-search" placeholder="ПОИСК...">
+                <button id="search-button">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </button>
+            </div>
+
+            <nav class="main-nav">
+                <a href="#" class="active" data-section="home">Главная</a>
+                <a href="#" data-section="catalog">Каталог</a>
+                <a href="#" data-section="cart">Корзина</a>
+                <a href="#" data-section="about">О нас</a>
+            </nav>
+
+            <!-- Добавить в header, рядом с навигацией -->
+            <div class="theme-toggle">
+                <button id="theme-toggle" aria-label="Переключить тему">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Мобильное меню -->
+        <div class="mobile-menu">
+            <div class="mobile-menu-content">
+                <div class="mobile-menu-header">
+                    <h2>МЕНЮ</h2>
+                    <button class="mobile-menu-close">×</button>
+                </div>
+                <nav class="mobile-nav">
+                    <a href="#" data-section="home">Главная</a>
+                    <a href="#" data-section="catalog">Каталог</a>
+                    <a href="#" data-section="cart">Корзина</a>
+                    <a href="#" data-section="about">О нас</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="home" style="display:none;">
+            <h2>Главная</h2>
+            <p>Добро пожаловать в AromTest — магазин духов!</p>
+        </section>
+
+        <!-- ОБНОВЛЕННАЯ СЕКЦИЯ КАТАЛОГА -->
+        <section id="catalog">
+            <h2>Каталог духов</h2>
+
+            <!-- Панель фильтров -->
+            <div class="filters-panel">
+                <div class="filter-group">
+                    <label for="filter-category">Категория:</label>
+                    <select id="filter-category">
+                        <option value="all">Все</option>
+                        <option value="мужской">Мужские</option>
+                        <option value="женский">Женские</option>
+                        <option value="унисекс">Унисекс</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="filter-brand">Бренд:</label>
+                    <select id="filter-brand">
+                        <option value="all">Все</option>
+                        <!-- Опции брендов будут заполняться динамически -->
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="filter-price-min">Цена от:</label>
+                    <input type="number" id="filter-price-min" placeholder="0" min="0">
+                </div>
+
+                <div class="filter-group">
+                    <label for="filter-price-max">Цена до:</label>
+                    <input type="number" id="filter-price-max" placeholder="10000" min="0">
+                </div>
+
+                <div class="filter-group">
+                    <label>
+                        <input type="checkbox" id="filter-in-stock"> В наличии
+                    </label>
+                </div>
+
+                <button id="apply-filters" class="filter-btn">Применить</button>
+                <button id="reset-filters" class="filter-btn">Сбросить</button>
+            </div>
+
+            <!-- Категории -->
+            <div class="categories">
+                <button class="category-btn active" data-category="all">Все</button>
+                <button class="category-btn" data-category="мужской">Мужские</button>
+                <button class="category-btn" data-category="женский">Женские</button>
+                <button class="category-btn" data-category="унисекс">Унисекс</button>
+            </div>
+
+            <div class="perfume-list">
+                <!-- Карточки товаров будут рендериться здесь динамически -->
+            </div>
+        </section>
+        <!-- КОНЕЦ ОБНОВЛЕННОЙ СЕКЦИИ КАТАЛОГА -->
+
+        <section id="cart" style="display:none;">
+            <h2>КОРЗИНА</h2>
+            <div class="cart-items">
+                <p class="empty-cart">Корзина пуста</p>
+            </div>
+
+            <!-- Добавить перед cart-total -->
+            <div class="promo-code-section" style="margin: 20px 0; padding: 20px; border: 1px dashed #fff;">
+                <h3>ПРОМОКОД</h3>
+                <div class="promo-code-form">
+                    <input type="text" id="promo-code-input" placeholder="Введите промокод" style="padding: 10px; width: 200px; margin-right: 10px; background: #000; color: #fff; border: 1px solid #fff;">
+                    <button id="apply-promo-btn" class="checkout-btn" style="padding: 10px 20px; font-size: 0.9rem; width: auto; display: inline-block;">ПРИМЕНИТЬ</button>
+                    <p id="promo-message" style="margin-top: 10px; color: #999; font-size: 0.9rem;"></p>
+                </div>
+            </div>
+
+            <div class="cart-total">
+                <h3>ИТОГО: 0 ₽</h3>
+            </div>
+
+            <!-- Добавить после cart-total -->
+            <div id="checkout-form" style="display: none; margin-top: 30px;">
+                <h3>ОФОРМЛЕНИЕ ЗАКАЗА</h3>
+                <form id="order-form">
+                    <div class="form-group">
+                        <label>Имя *</label>
+                        <input type="text" id="customer-name" required placeholder="Введите ваше имя">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Телефон *</label>
+                        <input type="tel" id="customer-phone" required placeholder="+7 (999) 123-45-67">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Адрес доставки *</label>
+                        <textarea id="customer-address" required placeholder="Город, улица, дом, квартира"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Комментарий</label>
+                        <textarea id="customer-comment" placeholder="Дополнительная информация"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Способ связи:</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="contact-method" value="direct" id="contact-direct" checked>
+                                <label for="contact-direct" class="radio-label">
+                                    <span class="radio-custom"></span>
+                                    Написать напрямую
+                                </label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="contact-method" value="bot" id="contact-bot">
+                                <label for="contact-bot" class="radio-label">
+                                    <span class="radio-custom"></span>
+                                    Через бота
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="button" class="checkout-btn" id="submit-order-btn">ОТПРАВИТЬ ЗАКАЗ</button>
+                    <button type="button" class="back-to-cart-btn">НАЗАД В КОРЗИНУ</button>
+                </form>
+            </div>
+        </section>
+
+        <section id="about" style="display:none;">
+            <h2>О нас</h2>
+            <p>Информация о магазине AromTest.</p>
+        </section>
+    </main>
+
+
+    <!-- Модальное окно -->
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <span id="close-modal" class="close">&times;</span>
+        <div class="modal-header">
+            <h3 id="modal-title"></h3>
+            <p id="modal-brand" class="brand"></p>
+        </div>
+        <div class="modal-body">
+            <div class="modal-image-container">
+                <img id="modal-image" src="" alt="" />
+            </div>
+            <div class="modal-details">
+                <p id="modal-price" class="price"></p>
+                <p id="modal-volume" class="volume"></p>
+                <p id="modal-stock" class="stock"></p>
+                <div class="modal-notes-section">
+                    <h4>Ноты аромата:</h4>
+                    <p id="modal-notes"></p>
+                </div>
+                <div class="modal-description-section">
+                    <h4>Описание:</h4>
+                    <p id="modal-description"></p>
+                </div>
+                <div class="modal-category-section">
+                    <h4>Категория:</h4>
+                    <p id="modal-category"></p>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <!-- Кнопка "Купить" в модальном окне -->
+            <button id="modal-buy-btn" class="buy-btn">КУПИТЬ</button>
+        </div>
+    </div>
+</div>
+
+    <footer class="footer-dark">
+        <div class="container">
+            <p>&copy; 2025 AromTest. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>
