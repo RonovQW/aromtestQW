@@ -3,12 +3,13 @@
   "builds": [
     { "src": "api/index.js", "use": "@vercel/node" }
   ],
-  "routes": [
-    { "src": "^/$", "dest": "/index.html" },
-    { "src": "/admin", "dest": "/api/index.js" },
-    { "src": "/api/admin-login", "dest": "/api/index.js" },
-    { "src": "/api/admin-logout", "dest": "/api/index.js" },
-    { "src": "/admin-login.html", "status": 308, "headers": { "Location": "/src/admin-login.html" } },
-    { "src": "/(.*)", "dest": "/$1" }
+  "rewrites": [
+    { "source": "/", "destination": "/index.html" },
+    { "source": "/admin", "destination": "/api/index.js" },
+    { "source": "/api/admin-login", "destination": "/api/index.js" },
+    { "source": "/api/admin-logout", "destination": "/api/index.js" }
+  ],
+  "redirects": [
+    { "source": "/admin-login.html", "destination": "/src/admin-login.html", "permanent": true }
   ]
 }
